@@ -7,7 +7,7 @@ services:
     environment:
       CLIENT_MAX_BODY_SIZE: 1024M
       DOMAINS: >
-        moodle.test -> http://moodle:80,
+        moodle.test -> http://moodle:8080,
       STAGE: local
     volumes:
       - https-portal_certs:/var/lib/https-portal
@@ -19,7 +19,9 @@ services:
       - moodle
 
   moodle:
-    image: docker.io/bitnami/moodle:4
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - MOODLE_DATABASE_HOST=mariadb
       - MOODLE_DATABASE_PORT_NUMBER=3306
@@ -30,7 +32,7 @@ services:
       - MOODLE_REVERSEPROXY=true
       - MOODLE_SSLPROXY=true
     expose:
-      - 80
+      - 8080
     volumes:
       - moodle:/bitnami/moodle
       - moodledata:/bitnami/moodledata
