@@ -28,9 +28,6 @@ services:
       - MOODLE_DATABASE_USER=moodle
       - MOODLE_DATABASE_NAME=moodle
       - MOODLE_DATABASE_PASSWORD=12345Abcde
-      - MOODLE_HOST=moodle.test
-      - MOODLE_REVERSEPROXY=true
-      - MOODLE_SSLPROXY=true
     expose:
       - 8080
     volumes:
