@@ -7,43 +7,49 @@ services:
     environment:
       CLIENT_MAX_BODY_SIZE: 1024M
       DOMAINS: >
-        wordpress.test -> http://wordpress:80,
+        moodle.test -> http://moodle:80,
       STAGE: local
     volumes:
       - https-portal_certs:/var/lib/https-portal
       - https-portal_logs:/var/log/nginx
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     depends_on:
-      - wordpress
+      - moodle
 
-  wordpress:
-    image: wordpress:latest
+  moodle:
+    image: docker.io/bitnami/moodle:4
+    environment:
+      - MOODLE_DATABASE_HOST=mariadb
+      - MOODLE_DATABASE_PORT_NUMBER=3306
+      - MOODLE_DATABASE_USER=moodle
+      - MOODLE_DATABASE_NAME=moodle
+      - MOODLE_DATABASE_PASSWORD=12345Abcde
+      - MOODLE_HOST=moodle.test
+      - MOODLE_REVERSEPROXY=true
+      - MOODLE_SSLPROXY=true
     expose:
       - 80
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
     volumes:
-      - wordpress:/var/www/html
+      - moodle:/bitnami/moodle
+      - moodledata:/bitnami/moodledata
     depends_on:
-      - db
+      - mariadb
 
-  db:
-    image: mariadb:latest
+  mariadb:
+    image: mariadb:10.6
     environment:
-      MYSQL_DATABASE: exampledb
-      MYSQL_USER: exampleuser
-      MYSQL_PASSWORD: examplepass
+      MYSQL_DATABASE: moodle
+      MYSQL_USER: moodle
+      MYSQL_PASSWORD: 12345Abcde
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - db:/var/lib/mysql
+      - mariadb:/var/lib/mysql
 
 volumes:
   https-portal_certs:
   https-portal_logs:
-  wordpress:
-  db:
+  moodle:
+  moodledata:
+  mariadb:

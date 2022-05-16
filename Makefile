@@ -18,7 +18,7 @@ stop:
 restart: stop start
 
 workspace:
-	@docker-compose exec wordpress /bin/bash
+	@docker-compose exec moodle /bin/bash
 
 stats:
 	@docker stats
@@ -29,5 +29,5 @@ clean:
 _urls:
 	${info }
 	@echo -------------------
-	@echo [WordPress] https://wordpress.test
+	@echo [Moodle] https://moodle.test
 	@echo -------------------
