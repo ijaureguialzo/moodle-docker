@@ -4,7 +4,7 @@ help:
 	@echo start / stop / restart
 	@echo workspace
 	@echo stats
-	@echo clean
+	@echo build / clean
 	@echo -------------------
 
 _start-command:
@@ -22,6 +22,9 @@ workspace:
 
 stats:
 	@docker stats
+
+build:
+	@docker-compose pull && docker-compose build --pull
 
 clean:
 	@docker-compose down -v --remove-orphans
