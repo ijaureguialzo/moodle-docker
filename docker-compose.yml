@@ -1,18 +1,21 @@
 services:
 
-  https-portal:
-    image: steveltn/https-portal:1
-    environment:
-      CLIENT_MAX_BODY_SIZE: 16384M
-      DOMAINS: >
-        moodle.test -> http://moodle:80,
-      STAGE: local
-    volumes:
-      - https-portal_certs:/var/lib/https-portal
-      - https-portal_logs:/var/log/nginx
+  traefik:
+    image: traefik:${TRAEFIK_VERSION:-3}
     ports:
       - "80:80"
       - "443:443"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard.rule=Host(`${FQDN_TRAEFIK:-traefik.test}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard.service=api@internal"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard.tls=true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
     depends_on:
       - moodle
 
@@ -26,8 +29,12 @@ services:
       - MOODLE_DATABASE_PASSWORD=12345Abcde
       - PHP_INI-post_max_size=16G
       - PHP_INI-upload_max_filesize=16G
-    expose:
-      - "80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-moodle.rule=Host(`${FQDN_MOODLE:-moodle.test}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-moodle.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-moodle.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-moodle.loadbalancer.server.port=80"
     volumes:
       - moodledata:/var/www/moodledata
     depends_on:
