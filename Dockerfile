@@ -1,5 +1,5 @@
 # Build stage: clonar Moodle con el contenedor oficial de git
-FROM alpine/git:2.47.0 AS builder
+FROM alpine/git:latest AS builder
 
 ARG MOODLE_BRANCH=MOODLE_502_STABLE
 
