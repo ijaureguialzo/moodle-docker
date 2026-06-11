@@ -24,13 +24,12 @@ services:
       - MOODLE_DATABASE_USER=moodle
       - MOODLE_DATABASE_NAME=moodle
       - MOODLE_DATABASE_PASSWORD=12345Abcde
-      - APACHE_DOCUMENT_ROOT=/var/www/html
       - PHP_INI-post_max_size=16G
       - PHP_INI-upload_max_filesize=16G
     expose:
       - "80"
     volumes:
-      - moodle:/var/www/html
+      - ../moodle:/var/www/html
       - moodledata:/var/www/moodledata
     depends_on:
       - mariadb
@@ -48,6 +47,5 @@ services:
 volumes:
   https-portal_certs:
   https-portal_logs:
-  moodle:
   moodledata:
   mariadb:
