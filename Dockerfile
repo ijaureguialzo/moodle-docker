@@ -1,4 +1,1 @@
-FROM docker.io/bitnami/moodle:4
-
-# Some credit goes to: https://www.linode.com/community/questions/16977/server-fails-after-installing-certbot-mpm-run-failed-exiting#answer-66578
-RUN echo 'Mutex posixsem' >>/opt/bitnami/apache2/conf/httpd.conf
+FROM moodlehq/moodle-php-apache:8.4

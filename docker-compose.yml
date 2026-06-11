@@ -5,7 +5,7 @@ services:
     environment:
       CLIENT_MAX_BODY_SIZE: 16384M
       DOMAINS: >
-        moodle.test -> http://moodle:8080,
+        moodle.test -> http://moodle:80,
       STAGE: local
     volumes:
       - https-portal_certs:/var/lib/https-portal
@@ -17,24 +17,21 @@ services:
       - moodle
 
   moodle:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - EXTRA_LOCALES=es_ES.UTF-8 UTF-8
+    build: .
     environment:
       - MOODLE_DATABASE_HOST=mariadb
       - MOODLE_DATABASE_PORT_NUMBER=3306
       - MOODLE_DATABASE_USER=moodle
       - MOODLE_DATABASE_NAME=moodle
       - MOODLE_DATABASE_PASSWORD=12345Abcde
-      - PHP_POST_MAX_SIZE=16G
-      - PHP_UPLOAD_MAX_FILESIZE=16G
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - PHP_INI-post_max_size=16G
+      - PHP_INI-upload_max_filesize=16G
     expose:
-      - 8080
+      - "80"
     volumes:
-      - moodle:/bitnami/moodle
-      - moodledata:/bitnami/moodledata
+      - moodle:/var/www/html
+      - moodledata:/var/www/moodledata
     depends_on:
       - mariadb
 
