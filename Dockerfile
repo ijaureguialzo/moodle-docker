@@ -8,7 +8,7 @@ RUN git clone --branch "${MOODLE_BRANCH}" --depth 1 https://github.com/moodle/mo
 # Build stage: descargar el plugin MCP de Moodle
 FROM alpine/git:latest AS mcp_plugin_builder
 
-ARG MCP_PLUGIN_REPO=https://github.com/onbirdev/moodle-webservice_mcp.git
+ARG MCP_PLUGIN_REPO=https://github.com/ijaureguialzo/moodle-webservice_mcp.git
 ARG MCP_PLUGIN_BRANCH=main
 
 RUN git clone --branch "${MCP_PLUGIN_BRANCH}" --depth 1 "${MCP_PLUGIN_REPO}" /mcp
