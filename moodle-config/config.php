@@ -12,15 +12,11 @@ $CFG->dbpass = '12345Abcde';
 $CFG->prefix = 'mdl_';
 
 $CFG->dboptions = [
-    'dbpersist' => 0,
-    'dbport' => '',
-    'dbsocket' => '',
     'dbcollation' => 'utf8mb4_unicode_ci',
 ];
 
 $CFG->wwwroot = 'https://moodle.test';
 $CFG->dataroot = '/var/www/moodledata';
-$CFG->admin = 'admin';
 
 $CFG->directorypermissions = 0770;
 
