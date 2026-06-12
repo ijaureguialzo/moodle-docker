@@ -16,6 +16,13 @@ RUN git clone --branch "${MCP_PLUGIN_BRANCH}" --depth 1 "${MCP_PLUGIN_REPO}" /mc
 # Stage final: imagen oficial de Moodle con el código copiado
 FROM moodlehq/moodle-php-apache:8.4
 
+ARG MOODLE_DATABASE_HOST=mariadb
+ARG MOODLE_DATABASE_PORT_NUMBER=3306
+ARG MOODLE_DATABASE_NAME=moodle
+ARG MOODLE_DATABASE_USER=moodle
+ARG MOODLE_DATABASE_PASSWORD=12345Abcde
+ARG MOODLE_WWWROOT=https://moodle.test
+
 COPY --from=moodle_builder /moodle /var/www/html
 
 # Moodle 5.1+ usa /public como webroot. Los plugins de tipo webservice van en public/webservice/<nombre>.
@@ -32,4 +39,13 @@ RUN printf '%s\n' \
     && find /var/www/html/public/webservice/mcp -type d -exec chmod 755 {} \; \
     && find /var/www/html/public/webservice/mcp -type f -exec chmod 644 {} \;
 
+# Generar config.php: copiar la plantilla y sustituir placeholders por los ARGs de docker-compose.yml
 COPY ./moodle-config/config.php /var/www/html/config.php
+RUN sed -i \
+    -e "s|%MOODLE_DATABASE_HOST%|${MOODLE_DATABASE_HOST}|g" \
+    -e "s|%MOODLE_DATABASE_PORT_NUMBER%|${MOODLE_DATABASE_PORT_NUMBER}|g" \
+    -e "s|%MOODLE_DATABASE_NAME%|${MOODLE_DATABASE_NAME}|g" \
+    -e "s|%MOODLE_DATABASE_USER%|${MOODLE_DATABASE_USER}|g" \
+    -e "s|%MOODLE_DATABASE_PASSWORD%|${MOODLE_DATABASE_PASSWORD}|g" \
+    -e "s|%MOODLE_WWWROOT%|${MOODLE_WWWROOT}|g" \
+    /var/www/html/config.php
