@@ -30,4 +30,6 @@ RUN printf '%s\n' \
     && a2enconf traefik-https-proxy \
     && chown -R root:root /var/www/html/public/webservice/mcp \
     && find /var/www/html/public/webservice/mcp -type d -exec chmod 755 {} \; \
-    && find /var/www/html/public/webservice/mcp -type f -exec chmod 644 {} \; \
+    && find /var/www/html/public/webservice/mcp -type f -exec chmod 644 {} \;
+
+COPY ./moodle-config/config.php /var/www/html/config.php
