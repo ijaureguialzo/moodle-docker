@@ -20,4 +20,6 @@ $CFG->dataroot = '/var/www/moodledata';
 
 $CFG->directorypermissions = 0770;
 
+date_default_timezone_set('Europe/Madrid');
+
 require_once('/var/www/html/lib/setup.php');
