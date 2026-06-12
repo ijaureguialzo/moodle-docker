@@ -20,7 +20,10 @@ services:
       - moodle
 
   moodle:
-    build: .
+    build:
+      context: .
+      args:
+        - MOODLE_BRANCH=${MOODLE_BRANCH:-MOODLE_502_STABLE}
     environment:
       - MOODLE_DATABASE_HOST=mariadb
       - MOODLE_DATABASE_PORT_NUMBER=3306
