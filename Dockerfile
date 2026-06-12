@@ -29,15 +29,16 @@ COPY --from=moodle_builder /moodle /var/www/html
 # El plugin webservice_mcp debe quedar como public/webservice/mcp, no como public/webservice/webservice_mcp.
 COPY --from=mcp_plugin_builder /mcp /var/www/html/public/webservice/mcp
 
+RUN chown -R root:root /var/www/html/public/webservice/mcp \
+    && find /var/www/html/public/webservice/mcp -type d -exec chmod 755 {} \; \
+    && find /var/www/html/public/webservice/mcp -type f -exec chmod 644 {} \;
+
 # Moodle está detrás de Traefik, que termina TLS y reenvía a Apache por HTTP.
 RUN printf '%s\n' \
     'SetEnvIf X-Forwarded-Proto "^https$" HTTPS=on' \
     'SetEnvIf X-Forwarded-Ssl "^on$" HTTPS=on' \
     > /etc/apache2/conf-available/traefik-https-proxy.conf \
-    && a2enconf traefik-https-proxy \
-    && chown -R root:root /var/www/html/public/webservice/mcp \
-    && find /var/www/html/public/webservice/mcp -type d -exec chmod 755 {} \; \
-    && find /var/www/html/public/webservice/mcp -type f -exec chmod 644 {} \;
+    && a2enconf traefik-https-proxy
 
 # Generar config.php: copiar la plantilla y sustituir placeholders por los ARGs de docker-compose.yml
 COPY ./moodle-config/config.php /var/www/html/config.php
