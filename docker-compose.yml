@@ -24,17 +24,12 @@ services:
       context: .
       args:
         - MOODLE_BRANCH=${MOODLE_BRANCH:-MOODLE_502_STABLE}
-    environment:
-      - MOODLE_DATABASE_HOST=mariadb
-      - MOODLE_DATABASE_PORT_NUMBER=3306
-      - MOODLE_DATABASE_USER=moodle
-      - MOODLE_DATABASE_NAME=moodle
-      - MOODLE_DATABASE_PASSWORD=12345Abcde
-      - PHP_INI-post_max_size=16G
-      - PHP_INI-upload_max_filesize=16G
-      - MOODLE_REVERSEPROXY=true
-      - MOODLE_SSLPROXY=true
-      - MOODLE_WWWROOT=https://${FQDN_MOODLE:-moodle.test}
+        - MOODLE_DATABASE_HOST=${MOODLE_DATABASE_HOST:-mariadb}
+        - MOODLE_DATABASE_PORT_NUMBER=${MOODLE_DATABASE_PORT_NUMBER:-3306}
+        - MOODLE_DATABASE_NAME=${MOODLE_DATABASE_NAME:-moodle}
+        - MOODLE_DATABASE_USER=${MOODLE_DATABASE_USER:-moodle}
+        - MOODLE_DATABASE_PASSWORD=${MOODLE_DATABASE_PASSWORD:-12345Abcde}
+        - MOODLE_WWWROOT=https://${FQDN_MOODLE:-moodle.test}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-moodle.rule=Host(`${FQDN_MOODLE:-moodle.test}`)"
@@ -54,10 +49,10 @@ services:
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
     environment:
-      MYSQL_DATABASE: moodle
-      MYSQL_USER: moodle
-      MYSQL_PASSWORD: 12345Abcde
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      - MYSQL_DATABASE=${MOODLE_DATABASE_NAME:-moodle}
+      - MYSQL_USER=${MOODLE_DATABASE_USER:-moodle}
+      - MYSQL_PASSWORD=${MOODLE_DATABASE_PASSWORD:-12345Abcde}
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
       - mariadb:/var/lib/mysql
 
