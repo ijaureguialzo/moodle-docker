@@ -13,6 +13,12 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard.service=api@internal"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard.tls=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-dashboard-redirect.redirectregex.regex=^https?://${FQDN_TRAEFIK:-traefik.moodle.test}/(.*)"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-dashboard-redirect.redirectregex.replacement=https://${FQDN_TRAEFIK:-traefik.moodle.test}/dashboard/$1"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard_redirect.rule=Host(`${FQDN_TRAEFIK:-traefik.moodle.test}`) && !PathPrefix(`/api`) && !PathPrefix(`/dashboard`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard_redirect.middlewares=${COMPOSE_PROJECT_NAME}-dashboard-redirect"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard_redirect.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-dashboard_redirect.tls=true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro

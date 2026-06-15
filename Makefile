@@ -13,10 +13,10 @@ help: _header
 
 _urls: _header
 	${info }
-	@echo ------------------------------------------------
+	@echo -------------------------------------
 	@echo [Moodle] https://moodle.test
-	@echo [Traefik] https://traefik.moodle.test/dashboard/
-	@echo ------------------------------------------------
+	@echo [Traefik] https://traefik.moodle.test
+	@echo -------------------------------------
 
 _header:
 	@echo ------
