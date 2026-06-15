@@ -16,6 +16,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/tls.yml:/etc/traefik/dynamic/tls.yml:ro
+      - ./traefik/certs:/certs:ro
     depends_on:
       - moodle
 

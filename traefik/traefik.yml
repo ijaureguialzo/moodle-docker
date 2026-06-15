@@ -5,6 +5,8 @@ api:
 providers:
   docker:
     exposedByDefault: false
+  file:
+    directory: /etc/traefik/dynamic
 
 entryPoints:
   web:

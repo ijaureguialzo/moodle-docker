@@ -1,11 +1,15 @@
 help:
 	@echo Opciones:
 	@echo -------------------
+	@echo certs
 	@echo start / stop / restart
 	@echo workspace
 	@echo stats
 	@echo build / clean
 	@echo -------------------
+
+certs:
+	@traefik/crear_certs.sh moodle.test
 
 _start-command:
 	@docker-compose up -d --remove-orphans

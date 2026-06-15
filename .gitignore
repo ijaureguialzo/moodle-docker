@@ -80,3 +80,5 @@ Temporary Items
 .idea/
 
 .env
+
+traefik/certs/
