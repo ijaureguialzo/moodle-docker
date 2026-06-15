@@ -1,12 +1,30 @@
-help:
+#!make
+
+help: _header
+	${info }
 	@echo Opciones:
-	@echo -------------------
-	@echo certs
+	@echo ----------------------
+	@echo build / certs
 	@echo start / stop / restart
+	@echo ----------------------
 	@echo workspace
-	@echo stats
-	@echo build / clean
-	@echo -------------------
+	@echo clean
+	@echo ----------------------
+
+_urls: _header
+	${info }
+	@echo ------------------------------------------------
+	@echo [Moodle] https://moodle.test
+	@echo [Traefik] https://traefik.moodle.test/dashboard/
+	@echo ------------------------------------------------
+
+_header:
+	@echo ------
+	@echo Moodle
+	@echo ------
+
+build:
+	@docker-compose pull && docker-compose build --pull
 
 certs:
 	@traefik/crear_certs.sh moodle.test
@@ -17,24 +35,12 @@ _start-command:
 start: _start-command _urls
 
 stop:
-	@docker-compose stop
+	@docker-compose down
 
 restart: stop start
 
 workspace:
 	@docker-compose exec moodle /bin/bash
 
-stats:
-	@docker stats
-
-build:
-	@docker-compose pull && docker-compose build --pull
-
 clean:
 	@docker-compose down -v --remove-orphans
-
-_urls:
-	${info }
-	@echo -------------------
-	@echo [Moodle] https://moodle.test
-	@echo -------------------
