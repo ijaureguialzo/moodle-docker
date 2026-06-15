@@ -23,7 +23,7 @@ services:
 
   moodle:
     build:
-      context: .
+      context: docker/moodle
       args:
         - MOODLE_BRANCH=${MOODLE_BRANCH:-MOODLE_502_STABLE}
         - MOODLE_DATABASE_HOST=${MOODLE_DATABASE_HOST:-mariadb}

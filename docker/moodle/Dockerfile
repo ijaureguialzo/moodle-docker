@@ -41,7 +41,7 @@ RUN printf '%s\n' \
     && a2enconf traefik-https-proxy
 
 # Generar config.php: copiar la plantilla y sustituir placeholders por los ARGs de docker-compose.yml
-COPY ./moodle-config/config.php /var/www/html/config.php
+COPY config.php /var/www/html/config.php
 RUN sed -i \
     -e "s|%MOODLE_DATABASE_HOST%|${MOODLE_DATABASE_HOST}|g" \
     -e "s|%MOODLE_DATABASE_PORT_NUMBER%|${MOODLE_DATABASE_PORT_NUMBER}|g" \
