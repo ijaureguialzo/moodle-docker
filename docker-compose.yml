@@ -59,7 +59,5 @@ services:
       - mariadb:/var/lib/mysql
 
 volumes:
-  https-portal_certs:
-  https-portal_logs:
   moodledata:
   mariadb:
