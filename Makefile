@@ -8,6 +8,7 @@ help: _header
 	@echo start / stop / restart
 	@echo ----------------------
 	@echo workspace
+	@echo cron
 	@echo clean
 	@echo ----------------------
 
@@ -41,6 +42,9 @@ restart: stop start
 
 workspace:
 	@docker-compose exec moodle /bin/bash
+
+cron:
+	@docker compose exec -u www-data moodle /usr/local/bin/php /var/www/html/admin/cli/cron.php
 
 clean:
 	@docker-compose down -v --remove-orphans
